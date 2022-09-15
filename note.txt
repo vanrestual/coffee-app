@@ -1,0 +1,7 @@
+Halaman Home
+- Terdapat sliding banner (multiple), ganti ke banner berikutnya setelah 2 detik
+- Berikan pull down to refresh di halaman home untuk me-refresh detail informasi user
+
+Halaman Menu
+- Menampilkan list kategori dan menu yang tersedia, lengkap dengan foto, judul, deskripsi, dan harga.
+- Jika menyentuh kategori lain (misal Best Seller), otomatis akan scroll ke kategori tsb
