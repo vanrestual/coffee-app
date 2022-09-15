@@ -7,7 +7,7 @@
     @apply bg-gray-100 text-gray-700;
   }
   #root {
-    @apply bg-gray-50 text-gray-600 border-l border-r shadow-lg;
-    @apply flex flex-col min-h-screen min-w-[19rem] container mx-auto w-full max-w-screen-sm;
+    @apply border-l border-r bg-gray-50 text-gray-600 shadow-lg;
+    @apply container mx-auto flex min-h-screen w-full min-w-[19rem] max-w-screen-sm flex-col;
   }
 }

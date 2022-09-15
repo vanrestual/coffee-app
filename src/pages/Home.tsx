@@ -7,60 +7,85 @@ import Carousel from "../components/Carousel";
 
 export type ContentsType = {
   banner: string[];
-  greeting: string; 
+  greeting: string;
   name: string;
-  point: number; 
+  point: number;
   qrcode: string;
   saldo: number;
-}
+};
 
 export default function Home() {
   const [showQRCode, setshowQRCode] = useState(false);
   const [contents, setContents] = useState<ContentsType>();
-  const [cookies] = useCookies(['access_token', 'refresh_token', 'token_type']);
+  const [cookies] = useCookies(["access_token", "refresh_token", "token_type"]);
   const getContents = useCallback(async () => {
     try {
-      const request = await fetch(`${process.env.REACT_APP_API_ENDPOINT}api/home`, {
-        method: "GET",
-        headers: {
-          "Authorization": `${cookies.token_type} ${cookies.access_token}`,
-          "Content-type": "application/json"
+      const request = await fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}api/home`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `${cookies.token_type} ${cookies.access_token}`,
+            "Content-type": "application/json",
+          },
         }
-      });
+      );
       const response = await request.json();
       setContents(response.result);
     } catch (error) {
       console.log(error);
     }
-  }, [cookies.access_token, cookies.token_type])
+  }, [cookies.access_token, cookies.token_type]);
 
   useEffect(() => {
     getContents();
-  }, [getContents])
+  }, [getContents]);
   return (
     <>
-      <section className="px-4 py-6 md:px-5 md:py-7 2xl:px-6 2xl:md:py-8 bg-cover bg-center" style={{ backgroundImage: `url(${background})` }}>
-        <div className="bg-white rounded-xl p-4 md:p-6 2xl:p-8 shadow-lg">
-          <div className="text-sm md:text-base 2xl:text-lg mb-px">{contents?.greeting}</div>
-          <div className="md:text-lg 2xl:text-xl font-semibold">{contents?.name}</div>
-          <div className="flex items-center space-x-4 md:space-x-6 2xl:space-x-8 mt-4">
-            <button className="text-gray-500 hover:text-gray-600 bg-white hover:bg-gray-300/10 border-gray-100 inline-flex justify-center items-center focus:outline-none transition duration-300 border-t h-20 md:h-24 w-20 md:w-24 p-4 md:p-5 2xl:p-6 rounded-full relative overflow-hidden shadow-md border hover:shadow-none" onClick={() => setshowQRCode(true)}>
-              <img className="w-full h-full" src={contents?.qrcode} alt="" />
+      <section
+        className="bg-cover bg-center px-4 py-6 md:px-5 md:py-7 2xl:px-6 2xl:md:py-8"
+        style={{ backgroundImage: `url(${background})` }}
+      >
+        <div className="rounded-xl bg-white p-4 shadow-lg md:p-6 2xl:p-8">
+          <div className="mb-px text-sm md:text-base 2xl:text-lg">
+            {contents?.greeting}
+          </div>
+          <div className="font-semibold md:text-lg 2xl:text-xl">
+            {contents?.name}
+          </div>
+          <div className="mt-4 flex items-center space-x-4 md:space-x-6 2xl:space-x-8">
+            <button
+              className="relative inline-flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border border-t border-gray-100 bg-white p-4 text-gray-500 shadow-md transition duration-300 hover:bg-gray-300/10 hover:text-gray-600 hover:shadow-none focus:outline-none md:h-24 md:w-24 md:p-5 2xl:p-6"
+              onClick={() => setshowQRCode(true)}
+            >
+              <img className="h-full w-full" src={contents?.qrcode} alt="" />
             </button>
-            <hr className="h-14 md:h-16 2xl:h-20 border border-dashed" />
-            <div className="grow flex flex-col justify-center space-y-2 md:space-y-2.5 2xl:space-y-3">
+            <hr className="h-14 border border-dashed md:h-16 2xl:h-20" />
+            <div className="flex grow flex-col justify-center space-y-2 md:space-y-2.5 2xl:space-y-3">
               <div className="flex justify-between">
-                <span className="text-lg leading-8 md:text-xl md:leading-9 2xl:text-2xl 2xl:md:leading-10">Saldo</span>
-                <span className="text-xl md:text-2xl 2xl:text-3xl font-bold truncate">{contents?.saldo}</span>
+                <span className="text-lg leading-8 md:text-xl md:leading-9 2xl:text-2xl 2xl:md:leading-10">
+                  Saldo
+                </span>
+                <span className="truncate text-xl font-bold md:text-2xl 2xl:text-3xl">
+                  {contents?.saldo}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-lg leading-8 md:text-xl md:leading-9 2xl:text-2xl 2xl:md:leading-10">Points</span>
-                <span className="text-xl md:text-2xl 2xl:text-3xl font-semibold truncate text-emerald-300">{contents?.point}</span>
+                <span className="text-lg leading-8 md:text-xl md:leading-9 2xl:text-2xl 2xl:md:leading-10">
+                  Points
+                </span>
+                <span className="truncate text-xl font-semibold text-emerald-300 md:text-2xl 2xl:text-3xl">
+                  {contents?.point}
+                </span>
               </div>
             </div>
           </div>
           <Transition appear show={showQRCode} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={() => setshowQRCode(false)}>
+            <Dialog
+              as="div"
+              className="relative z-50"
+              onClose={() => setshowQRCode(false)}
+            >
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -73,7 +98,7 @@ export default function Home() {
                 <div className="fixed inset-0 bg-black/50" />
               </Transition.Child>
               <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center md:px-4 2xl:px-6 text-center">
+                <div className="flex min-h-full items-center justify-center text-center md:px-4 2xl:px-6">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -83,18 +108,25 @@ export default function Home() {
                     leaveFrom="opacity-100 scale-100"
                     leaveTo="opacity-0 scale-95"
                   >
-                    <Dialog.Panel className="w-full relative flex space-y-10 flex-col items-center justify-center max-w-screen-sm md:mr-4 transform overflow-hidden bg-white px-6 pt-6 pb-12 text-left align-middle shadow-xl transition-all min-h-screen">
+                    <Dialog.Panel className="relative flex min-h-screen w-full max-w-screen-sm transform flex-col items-center justify-center space-y-10 overflow-hidden bg-white px-6 pt-6 pb-12 text-left align-middle shadow-xl transition-all md:mr-4">
                       <button
-                        className="absolute focus:outline-none truncate right-2 md:right-2.5 2xl:right-3 top-2 md:top-2.5 2xl:top-3 inline-flex justify-center items-center border border-transparent text-sm 2xl:text-base font-medium rounded-xl p-2.5 md:p-3 2xl:p-3.5  text-gray-500 hover:text-gray-600 hover:bg-gray-50 focus-visible:text-gray-600 focus-visible:bg-gray-50 focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 transition duration-300"
+                        className="absolute right-2 top-2 inline-flex items-center justify-center truncate rounded-xl border border-transparent p-2.5 text-sm font-medium text-gray-500 transition duration-300 hover:bg-gray-50 hover:text-gray-600 focus:outline-none focus-visible:bg-gray-50 focus-visible:text-gray-600  focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 md:right-2.5 md:top-2.5 md:p-3 2xl:right-3 2xl:top-3 2xl:p-3.5 2xl:text-base"
                         onClick={() => setshowQRCode(false)}
                         type="button"
                       >
-                        <XMarkIcon aria-hidden="true" className="h-5 w-5 md:h-6 md:w-6 2xl:h-7 2xl:w-7 shrink-0" />
+                        <XMarkIcon
+                          aria-hidden="true"
+                          className="h-5 w-5 shrink-0 md:h-6 md:w-6 2xl:h-7 2xl:w-7"
+                        />
                       </button>
-                      <Dialog.Title className="text-lg md:text-xl 2xl:text-2xl text-center font-semibold text-gray-800">
+                      <Dialog.Title className="text-center text-lg font-semibold text-gray-800 md:text-xl 2xl:text-2xl">
                         Show the QR Code below to the cashier.
                       </Dialog.Title>
-                      <img className="w-full max-w-[12rem] md:max-w-[14rem] 2xl:max-w-[16rem] h-full" src={contents?.qrcode} alt="" />
+                      <img
+                        className="h-full w-full max-w-[12rem] md:max-w-[14rem] 2xl:max-w-[16rem]"
+                        src={contents?.qrcode}
+                        alt=""
+                      />
                     </Dialog.Panel>
                   </Transition.Child>
                 </div>
@@ -105,5 +137,5 @@ export default function Home() {
       </section>
       <Carousel banners={(contents as any).banner} />
     </>
-  )
+  );
 }

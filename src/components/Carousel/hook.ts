@@ -1,12 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-export default function useIntervalWithStop(callback: VoidFunction, delay: any) {
+export default function useIntervalWithStop(
+  callback: VoidFunction,
+  delay: any
+) {
   const savedCallback = useRef();
   const intervalId = useRef();
   const [currentDelay, setDelay] = useState(delay);
 
   const toggleRunning = useCallback(() => {
-    setDelay((currentDelayVar: any) => (currentDelayVar === null ? delay : null))
+    setDelay((currentDelayVar: any) =>
+      currentDelayVar === null ? delay : null
+    );
   }, [delay]);
 
   const clear = useCallback(() => clearInterval(intervalId.current), []);
@@ -19,7 +24,7 @@ export default function useIntervalWithStop(callback: VoidFunction, delay: any) 
   useEffect(() => {
     const tick = () => {
       (savedCallback as any).current();
-    }
+    };
     if (intervalId.current) clear();
     if (currentDelay !== null) {
       (intervalId as any).current = setInterval(tick, currentDelay);
@@ -28,4 +33,4 @@ export default function useIntervalWithStop(callback: VoidFunction, delay: any) 
   }, [currentDelay, clear]);
 
   return [toggleRunning, !!currentDelay];
-};
+}

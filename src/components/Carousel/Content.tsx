@@ -8,7 +8,7 @@ export type Props = {
 } & HTMLAttributes<HTMLDivElement>;
 
 const SliderContent: FC<Props> = ({ ...props }) => (
-  <div className="h-full flex" {...props} />
+  <div className="flex h-full" {...props} />
   // transform: translateX(-${translate}px);
   // transition: transform ease-out ${transition}s;
   // width: ${width}px;
